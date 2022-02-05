@@ -13,7 +13,10 @@
     "url": "https://github.com/jan-leila/u4ia.git"
   },
   "keywords": [
-    "pronoun"
+    "pronoun",
+    "pronouns",
+    "accessibility",
+    "gender"
   ],
   "devDependencies": {
     "mocha": "^9.1.3"
