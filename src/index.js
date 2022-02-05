@@ -1,17 +1,17 @@
 
-let code_map = [
+const default_localization = [
     [ 'she', 'her' ],
     [ 'he', 'him' ],
     [ 'they', 'them' ],
     [ 'any', 'all' ],
 ]
 
-function pronoun_builder(code, index){
-    return code_map[code][Math.min(index, 1)];
+function pronoun_builder(code, index, localization){
+    return localization[code][Math.min(index, localization[code].length - 1)];
 }
 
-function code_builder(pronoun) {
-    return code_map.findIndex((values) => {
+function code_builder(pronoun, localization = default_localization){
+    return localization.findIndex((values) => {
         return values.some((value) => {
             return pronoun === value;
         });
@@ -33,24 +33,28 @@ function get_arrangement(index){
 }
 
 // get pronoun string from code
-function get_pronouns(code){
+function get_pronouns(code, localization = default_localization){
     if(code == undefined){
         return undefined;
     }
     let codes = get_arrangement(code);
     if(codes.length === 0) codes.push(3);
     codes = [ ...codes, codes[0] ].slice(0, Math.max(codes.length, 2));
-    return codes.map(pronoun_builder).join('/');
+    return codes.map((v, i) => {
+        return pronoun_builder(v, i, localization)
+    }).join('/');
 }
 
 // get code from pronoun string
-function get_code(pronouns){
+function get_code(pronouns, localization = default_localization){
     if(pronouns == undefined) return undefined;
     if(typeof pronouns === 'string'){
         pronouns = pronouns.split('/');
     }
     if(typeof pronouns[0] === 'string'){
-        pronouns = pronouns.map(code_builder);
+        pronouns = pronouns.map((v) => {
+            return code_builder(v, localization)
+        });
     }
     pronouns = pronouns.filter((c, i, arr) => arr.indexOf(c) === i);
     if(pronouns[0] === 3) return 0;
@@ -67,5 +71,7 @@ function get_code(pronouns){
 module.exports = {
     get_pronouns,
     get_code,
-    code_builder,
+    code_builder: (v, l) => {
+        return code_builder(v, Array.isArray(l)? l : undefined);
+    },
 }
