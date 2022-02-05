@@ -4,8 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha",
-    "start": "node test/index.js"
+    "test": "mocha"
   },
   "author": "Leyla Becker",
   "license": "MIT",
