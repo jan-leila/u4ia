@@ -27,8 +27,8 @@ describe('encode', () => {
                 encoded_value: get_code(pronoun),
             };
         });
-        let codes_match = encoded.every(({ encoded, code }) => {
-            return encoded === code;
+        let codes_match = encoded.every(({ encoded_value, code }) => {
+            return encoded_value === code;
         });
         assert(codes_match, JSON.stringify(encoded));
     });
