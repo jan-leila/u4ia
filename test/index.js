@@ -1,7 +1,7 @@
 const assert = require('assert');
 const u4ia = require('../src/index.js');
 
-const { get_pronouns, get_code } = u4ia;
+const { get_pronouns, get_code, code_builder } = u4ia;
 
 let codes = [ ...Array.from({ length: 16 }, (v, i) => i), undefined ];
 
@@ -25,6 +25,32 @@ describe('encode', () => {
                 pronoun,
                 code,
                 encoded_value: get_code(pronoun),
+            };
+        });
+        let codes_match = encoded.every(({ encoded_value, code }) => {
+            return encoded_value === code;
+        });
+        assert(codes_match, JSON.stringify(encoded));
+    });
+    it('should convert pronouns in string array format', () => {
+        let encoded = pronouns.map(([pronoun, code]) => {
+            return {
+                pronoun,
+                code,
+                encoded_value: get_code(pronoun?pronoun.split('/') : undefined),
+            };
+        });
+        let codes_match = encoded.every(({ encoded_value, code }) => {
+            return encoded_value === code;
+        });
+        assert(codes_match, JSON.stringify(encoded)); 
+    });
+    it('should convert pronouns in code array format', () => {
+        let encoded = pronouns.map(([pronoun, code]) => {
+            return {
+                pronoun,
+                code,
+                encoded_value: get_code(pronoun ? pronoun.split('/').map(code_builder) : undefined),
             };
         });
         let codes_match = encoded.every(({ encoded_value, code }) => {

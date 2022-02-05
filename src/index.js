@@ -46,11 +46,17 @@ function get_pronouns(code){
 // get code from pronoun string
 function get_code(pronouns){
     if(pronouns == undefined) return undefined;
-    let codes = pronouns.split('/').map(code_builder).filter((c, i, arr) => arr.indexOf(c) === i);
-    if(codes[0] === 3) return 0;
+    if(typeof pronouns === 'string'){
+        pronouns = pronouns.split('/');
+    }
+    if(typeof pronouns[0] === 'string'){
+        pronouns = pronouns.map(code_builder);
+    }
+    pronouns = pronouns.filter((c, i, arr) => arr.indexOf(c) === i);
+    if(pronouns[0] === 3) return 0;
     for(let i = 0; i < 16; i++){
         let test_codes = get_arrangement(i);
-        if(test_codes.length === codes.length && codes.every((code, i) => {
+        if(test_codes.length === pronouns.length && pronouns.every((code, i) => {
             return test_codes[i] === code;
         })){
             return i;
@@ -61,4 +67,5 @@ function get_code(pronouns){
 module.exports = {
     get_pronouns,
     get_code,
+    code_builder,
 }
