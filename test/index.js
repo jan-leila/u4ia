@@ -19,6 +19,22 @@ describe('decode', () => {
 });
 
 describe('encode', () => {
+    it('code_builder should return proper codes', () => {
+        let codes = [
+            [ "she", 0 ],
+            [ "her", 0 ],
+            [ "he", 1 ],
+            [ "him", 1 ],
+            [ "they", 2 ],
+            [ "them", 2 ],
+            [ "any", 3 ],
+            [ "all", 3 ],
+        ];
+        assert(codes.every(([ pronoun, code ]) => {
+            return code_builder(pronoun) === code;
+        }));
+    });
+
     it('all pronouns should decode into the code that generated them', () => {
         let encoded = pronouns.map(([ pronoun, code ]) => {
             return {
