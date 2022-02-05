@@ -1,0 +1,22 @@
+{
+  "name": "u4ia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node test/index.js"
+  },
+  "author": "Leyla Becker",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jan-leila/pronoun.git"
+  },
+  "keywords": [
+    "pronoun"
+  ],
+  "devDependencies": {
+    "mocha": "^9.1.3"
+  }
+}
