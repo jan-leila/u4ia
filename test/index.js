@@ -11,11 +11,9 @@ let pronouns = codes.map((code) => {
 
 describe('decode', () => {
     it('all codes should return a unique set of pronouns', () => {
-        let all_unique = pronouns.every(([ pronoun ]) => {
-            return pronouns.every(([check]) => {
-                return pronoun !== check;
-            });
-        }); 
+        let all_unique = pronouns.every(([ pronoun ], i) => {
+            return pronouns.indexOf(pronoun) !== i;
+        });
         assert(all_unique, JSON.stringify(pronouns));
     });
 });
