@@ -5,18 +5,31 @@ Library for encoding and decoding pronouns into a 4 bit value
 
 usage:
 ```js
-const u4ia = require('u4ia');
+const { get_code, get_pronouns, Localization } = require('u4ia');
 
-let code = u4ia.get_code('she/her');
+let code = get_code('she/her');
 // code should be 1
 console.log(code);
 
 /* storing code to be used at a later time */
 
-let pronouns = u4ia.get_pronouns(code);
+let pronouns = get_pronouns(code);
 
 // pronouns should be she/her
 console.log(pronouns);
+
+// define custom localization or pronouns
+const localization = new Localization([
+    [ 'she', 'her' ],
+    'he/him',
+    [ 'they', 'them'],
+    [ 'ze', 'hir' ],
+    'any/all',
+]);
+
+// use custom localization
+let localized_code = localization.get_code('ze/them');
+localization.get_pronouns(localized_code);
 ```
 
 supported pronouns:
