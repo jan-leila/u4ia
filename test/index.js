@@ -27,8 +27,8 @@ describe('encode', () => {
             [ "him", 1 ],
             [ "they", 2 ],
             [ "them", 2 ],
-            [ "any", 3 ],
-            [ "all", 3 ],
+            [ "any", -1 ],
+            [ "all", -1 ],
         ];
         assert(codes.every(([ pronoun, code ]) => {
             return code_builder(pronoun) === code;
