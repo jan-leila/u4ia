@@ -8,7 +8,7 @@ usage:
 const u4ia = require('u4ia');
 
 let code = u4ia.get_code('she/her');
-// code should be 0
+// code should be 1
 console.log(code);
 
 /* storing code to be used at a later time */
