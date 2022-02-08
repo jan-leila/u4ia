@@ -18,7 +18,10 @@ class Localization {
     }
 
     constructor(localization){
-        this._localization = localization;
+        this._localization = localization.map((row) => {
+            if(typeof row === 'string') return row.split('/');
+            return row;
+        });
     }
 
     _pronoun_builder(code, index) {

@@ -1,7 +1,7 @@
 const assert = require('assert');
 const u4ia = require('../src/index.js');
 
-const { get_pronouns, get_code, code_builder } = u4ia;
+const { get_pronouns, get_code, code_builder, Localization } = u4ia;
 
 let codes = [ ...Array.from({ length: 16 }, (v, i) => i), undefined ];
 
@@ -73,5 +73,20 @@ describe('encode', () => {
             return encoded_value === code;
         });
         assert(codes_match, JSON.stringify(encoded));
+    });
+});
+
+describe('localization', () => {
+    it('should support string input for pronouns', () => {
+        let localization = new Localization([
+            'she/her',
+            'he/him',
+            'they/them',
+            'any/all',
+        ]);
+        let matches = pronouns.every((pronoun) => {
+            return get_code(pronoun) === localization.get_code(pronoun);
+        });
+        assert(matches);
     });
 });
