@@ -12,4 +12,6 @@ module.exports = {
     zh: localization,
     chi: localization,
     zho: localization,
+    cmn: localization,
+    yue: localization,
 }
