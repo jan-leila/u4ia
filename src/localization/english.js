@@ -1,9 +1,9 @@
 const Localization = require('../localization.js');
 
 const localization = new Localization([
-    'she/her',
-    'he/him',
-    'they/them',
+    'she/her/hers',
+    'he/him/his',
+    'they/them/theirs',
 ], {
     base: ['any/all', 'any', 'all'],
 });
