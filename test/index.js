@@ -1,7 +1,9 @@
 const assert = require('assert');
 const u4ia = require('../src/index.js');
 
-const { get_pronouns, get_code, code_builder, Localization } = u4ia;
+const { get_arrangement } = require('../src/arrangement.js');
+
+const { get_pronouns, get_code, Localization } = u4ia;
 
 let codes = [ ...Array.from({ length: 16 }, (v, i) => i), undefined ];
 
@@ -19,22 +21,6 @@ describe('decode', () => {
 });
 
 describe('encode', () => {
-    it('code_builder should return proper codes', () => {
-        let codes = [
-            [ "she", 0 ],
-            [ "her", 0 ],
-            [ "he", 1 ],
-            [ "him", 1 ],
-            [ "they", 2 ],
-            [ "them", 2 ],
-            [ "any", -1 ],
-            [ "all", -1 ],
-        ];
-        assert(codes.every(([ pronoun, code ]) => {
-            return code_builder(pronoun) === code;
-        }));
-    });
-
     it('all pronouns should decode into the code that generated them', () => {
         let encoded = pronouns.map(([ pronoun, code ]) => {
             return {
@@ -53,7 +39,7 @@ describe('encode', () => {
             return {
                 pronoun,
                 code,
-                encoded_value: get_code(pronoun?pronoun.split('/') : undefined),
+                encoded_value: get_code(pronoun? pronoun.split('/') : undefined),
             };
         });
         let codes_match = encoded.every(({ encoded_value, code }) => {
@@ -66,7 +52,7 @@ describe('encode', () => {
             return {
                 pronoun,
                 code,
-                encoded_value: get_code(pronoun ? pronoun.split('/').map(code_builder) : undefined),
+                encoded_value: get_code(pronoun? get_arrangement(get_code(pronoun)): undefined),
             };
         });
         let codes_match = encoded.every(({ encoded_value, code }) => {
@@ -79,14 +65,64 @@ describe('encode', () => {
 describe('localization', () => {
     it('should support string input for pronouns', () => {
         let localization = new Localization([
-            'she/her',
-            'he/him',
-            'they/them',
-            'any/all',
+            'a',
+            'b',
+            'c',
         ]);
         let matches = pronouns.every((pronoun) => {
-            return get_code(pronoun) === localization.get_code(pronoun);
+            let code = get_code(pronoun);
+            let new_pronoun = localization.get_pronouns(code);
+            return pronoun !== new_pronoun && code === localization.get_code(new_pronoun);
         });
         assert(matches);
     });
+
+    // TODO: tests for localization options
 });
+
+describe('expandability', () => {
+    let counter = Array.from({ length: 7 }, (_, i) => i);
+    let characters = counter.map((i) => String.fromCharCode(97 + i));
+    it('all localizations should return the same pronouns for the same code', () => {
+        let localizations = counter.map((i) => new Localization(characters.slice(0, i + 1)));
+        let all_match = (() => {
+            let max = localizations[localizations.length - 1].get_size();
+            for(let i = 0; i < max; i++){
+                if(i > localizations[0].get_size()){
+                    localizations.shift();
+                }
+                let results = localizations.map((localization) => localization.get_pronouns(i));
+                let all_match = results.every((value, _, arr) => {
+                    return arr.every((_value) => {
+                        return value === _value;
+                    });
+                });
+                if (!all_match) return false;
+            }
+            return true;
+        })();
+        assert(all_match);
+    });
+    
+    it('all localizations should return the same code for the same pronouns', () => {
+        let localizations = counter.map((i) => new Localization(characters.slice(0, i + 1)));
+        let all_match = (() => {
+            let max = localizations[localizations.length - 1].get_size();
+            for (let i = 0; i < max; i++) {
+                if (i > localizations[0].get_size()) {
+                    localizations.shift();
+                }
+                let results = localizations.map((localization) => localization.get_code(localization.get_pronouns(i)));
+                let all_match = results.every((value, _, arr) => {
+                    return arr.every((_value) => {
+                        return value === _value;
+                    });
+                });
+                if (!all_match) return false;
+            }
+            return true;
+        })();
+        assert(all_match);
+    });
+
+})
